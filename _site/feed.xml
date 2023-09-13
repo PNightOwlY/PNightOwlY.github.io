@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-13T13:12:54+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Your awesome title</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2023-09-12T18:07:56+08:00</published><updated>2023-09-12T18:07:56+08:00</updated><id>http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll.html"><![CDATA[<p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-14T00:36:08+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ying Peng Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</subtitle><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2023-09-12T18:07:56+08:00</published><updated>2023-09-12T18:07:56+08:00</updated><id>http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll.html"><![CDATA[<p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
 
 <p>Jekyll requires blog post files to be named according to the following format:</p>
 
@@ -14,4 +15,180 @@
 <span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
 <span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
 
-<p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>]]></content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.]]></summary></entry></feed>
+<p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.]]></summary></entry><entry><title type="html">Language Model</title><link href="http://localhost:4000/posts/2022/09/language-model/" rel="alternate" type="text/html" title="Language Model" /><published>2022-09-20T00:00:00+08:00</published><updated>2022-09-20T00:00:00+08:00</updated><id>http://localhost:4000/posts/2022/09/language-model</id><content type="html" xml:base="http://localhost:4000/posts/2022/09/language-model/"><![CDATA[<p>This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.</p>
+
+<h1 id="word2vec">word2vec</h1>
+<p>Word2Vec is a popular algorithm used in Natural Language Processing (NLP) for generating word embeddings. We need Word2Vec for several reasons:</p>
+
+<ol>
+  <li>
+    <p>Word representation: Word2Vec allows us to represent words as dense vectors in a continuous vector space. This representation captures semantic and syntactic relationships between words, enabling machines to better understand and process natural language.</p>
+  </li>
+  <li>
+    <p>Feature extraction: Word2Vec captures meaningful linguistic features from the input text, such as word similarities and contextual relationships. These features can be used as input for various downstream NLP tasks like sentiment analysis, text classification, machine translation, and named entity recognition, improving their performance.</p>
+  </li>
+  <li>
+    <p>Dimensionality reduction: Word2Vec reduces the high-dimensional space of words into a lower-dimensional space while preserving semantic relationships. This reduction makes the computations more efficient and manageable, especially when dealing with large amounts of text data.</p>
+  </li>
+  <li>
+    <p>Contextual understanding: Word2Vec models, such as Skip-gram and Continuous Bag of Words (CBOW), consider the surrounding words or context of a target word when learning word embeddings. This contextual understanding enables the model to capture word meanings based on their surrounding words and improve the accuracy of semantic relationships.</p>
+  </li>
+</ol>
+
+<p>Overall, Word2Vec plays a crucial role in various NLP applications by providing efficient word representations, feature extraction capabilities, and improved contextual understanding.</p>
+
+<h2 id="word2vec-models">word2vec models</h2>
+<p>The common word2vec models are Skip-gram and Continuous Bag of Words(CBOW), consider the surrounding words or context of a target word when learning word embeddings. Both models have two curcial parameters, context word and center word vectors.</p>
+<h3 id="cbow">CBOW</h3>
+<p>This method takes the context of each word as the input and tries to predict the word corresponding to the context.
+<img src="/images/language-model/cbow.jpg" alt="CBOW" />
+The above model takes C context words. When $Wvn$ is used to calculate hidden layer inputs, we take an average over all these C context word inputs.</p>
+
+<p>The input or the context word is a one hot encoded vector of size V. The hidden layer contains N neurons and the output is again a V length vector with the elements being the softmax values.
+Let’s get the terms in the picture right:</p>
+<ul>
+  <li>$Wvn$ is the weight matrix that maps the input x to the hidden layer (V<em>N dimensional matrix)
+-$W’nv$ is the weight matrix that maps the hidden layer outputs to the final output layer (N</em>V dimensional matrix)</li>
+</ul>
+
+<h3 id="skip-gram">Skip-gram</h3>
+<p>This method takes the center words as the input and tries to predict the word corresponding to the center.
+<img src="/images/language-model/skip-gram.jpg" />
+The above model takes a center word as input and outputs C probability distributions of V probabilities, one for each context word.</p>
+
+<p>The more information related to Hierarchical Softmax and Skip-Gram Negative Sampling can be found <a href="https://arxiv.org/pdf/1411.2738.pdf">here</a>.</p>
+
+<h1 id="seq2seq">seq2seq</h1>
+<h2 id="recurrent-neural-networks">Recurrent Neural Networks</h2>
+<p><img src="/images/language-model/rnn.jpg" />
+The design of RNN solves the continuous input space, such as time continuous and space continuous input. Another difference with feed-forward neural networks is that the output format is also a sequence. Given a sequence of input $X = (X_1,X_2,…,X_T)$, and the standard RNN derives a sequence of outputs $y = (y_1, y_2, …, y_T)$ by the following equations and a more intuitive structure displayed above.</p>
+
+\[H_t = sigmoid(WH_{t-1}+UX_t)\]
+
+\[y_t = VH_t\]
+
+<p>Herein, units H, X, and y represent the hidden, input, and output units, respectively. The parameter W, U, and V are the weights that need to be learned by iterating the loss and backpropagation. The RNN structure is suitable for solving the input with any length since the parameters are predominated by W, U, and V . RNN maintains an activation function for each layer, making the model extremely deep when the input space is enormous. Extremely deep models lead to a series of problems, such as vanishing or exploding gradients, which makes the training of RNN difficult.</p>
+
+<h2 id="long-short-term-memory">Long Short-Term Memory</h2>
+<p>The central novel concept of LSTM architecture is the introduction of manipulated gates and short-term memory. These two concepts are excellent solutions to the difficulty of RNN in learning time dependencies beyond a few time steps long. The presence of the LSTM structure successfully solved the problem of gradient vanishing that appears during the training of the vanilla RNN.
+<img src="/images/language-model/lstm.jpg" /></p>
+
+<h3 id="forget-gate">Forget gate</h3>
+<p>The introduction of forget gates allows the LSTM to reset its state, remember common behavioral patterns, and forget unique behaviors, improving the model’s generality and ability to learn sequential tasks. The information from the previously hidden unit $H_{t-1}$ and current input $X_t$ are passed through the forget gate ($f_t$) and will be rescaled to 0 to 1. The value closer to 0 means forget, and approaching one means to keep. The computation formula is presented below (W and b represent weights and bias, respectively).</p>
+
+\[f_t = \sigma(W_f(H_{t-1}, X_t) + b_f)\]
+
+<h3 id="input-gate">Input gate</h3>
+
+<p>The design of the input gate is used to update the cell state. The input gate decides which values of $H_{t-1}$ and $X_t$ need to be updated for computing the new cell state $C_t$. The hidden state $H_{t-1}$ and input $X_t$ information are passed into the tanh function and rescaled between -1 and 1 to help regulate the model. Then we multiply the outputs from the sigmoid and the tanh functions. The output of the sigmoid function decides which information is essential to keep from the tanh output. The new cell state is the summation of the forget and input gate. The following equations describe the whole process.</p>
+
+\[i_t = \sigma(W_i(H_{t-1}, X_t) + b_i)\]
+
+\[C^{'}_t = tanh(W_c(H_{t-1}, X_t) + b_c)\]
+
+\[C_t = f_t C_{t-1} + i_t C^{'}_t\]
+
+<h3 id="output-gate">Output gate</h3>
+
+<p>The output gate determines the value of the following hidden state $H_t$, and $H_t$ contains the value of the previous input, so the value of $H_t$ can also be used to predict. The previous information $H_{t-1}$ and current input $X_t$ are passed into a sigmoid function, and then the updated cell state C is squeezed by the tanh function between -1 to 1. Then we multiply the output from the tanh and the sigmoid, and the outcome is $H_t$, then $C_t$ and $H_t$ move to the next time step. The corresponding formulas are as follows.</p>
+
+\[o_t = \sigma(W_o(H_{t-1}, X_t) + b_o)\]
+
+\[H_t = o_t tanh(C_t)\]
+
+<h2 id="transformers">Transformers</h2>
+<p>The Transformers model is a powerful and popular approach in the field of natural language processing (NLP). At the core of the Transformers model lies the self-attention mechanism, which enables the model to handle dependencies between different positions in the input sequence simultaneously. This capability makes Transformers highly effective in processing long text sequences and modeling semantic relationships.</p>
+
+<p>Firstly, the inputs will be transfer to input embedding, then add positional encoding as input of encode part. The encode part consist of two layer <code class="language-plaintext highlighter-rouge">Multi-Head Attention</code> and <code class="language-plaintext highlighter-rouge">Feed Forward</code>, and both with residual connection.  <code class="language-plaintext highlighter-rouge">Multi-head</code> learns more aspects of inputs, and multi-layer makes each layer learn different level attention representation. Decode module almost have the same structure except the masked attetion, since the model is not supposed to see the full outputs.</p>
+
+<p><img src="/images/language-model/transformers.jpg" /></p>
+
+<p>One of the most renowned Transformer models is BERT (Bidirectional Encoder Representations from Transformers), which is a pre-trained language model used for various NLP tasks such as text classification, named entity recognition, sentiment analysis, and more. BERT achieved breakthrough results in natural language understanding tasks and has been widely adopted both in industry and academic research.</p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="NLP" /><summary type="html"><![CDATA[This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.]]></summary></entry><entry><title type="html">Language Model</title><link href="http://localhost:4000/posts/2022/09/language-model/" rel="alternate" type="text/html" title="Language Model" /><published>2022-09-20T00:00:00+08:00</published><updated>2022-09-20T00:00:00+08:00</updated><id>http://localhost:4000/posts/2022/09/language-model</id><content type="html" xml:base="http://localhost:4000/posts/2022/09/language-model/"><![CDATA[<p>This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.</p>
+
+<h1 id="word2vec">word2vec</h1>
+<p>Word2Vec is a popular algorithm used in Natural Language Processing (NLP) for generating word embeddings. We need Word2Vec for several reasons:</p>
+
+<ol>
+  <li>
+    <p>Word representation: Word2Vec allows us to represent words as dense vectors in a continuous vector space. This representation captures semantic and syntactic relationships between words, enabling machines to better understand and process natural language.</p>
+  </li>
+  <li>
+    <p>Feature extraction: Word2Vec captures meaningful linguistic features from the input text, such as word similarities and contextual relationships. These features can be used as input for various downstream NLP tasks like sentiment analysis, text classification, machine translation, and named entity recognition, improving their performance.</p>
+  </li>
+  <li>
+    <p>Dimensionality reduction: Word2Vec reduces the high-dimensional space of words into a lower-dimensional space while preserving semantic relationships. This reduction makes the computations more efficient and manageable, especially when dealing with large amounts of text data.</p>
+  </li>
+  <li>
+    <p>Contextual understanding: Word2Vec models, such as Skip-gram and Continuous Bag of Words (CBOW), consider the surrounding words or context of a target word when learning word embeddings. This contextual understanding enables the model to capture word meanings based on their surrounding words and improve the accuracy of semantic relationships.</p>
+  </li>
+</ol>
+
+<p>Overall, Word2Vec plays a crucial role in various NLP applications by providing efficient word representations, feature extraction capabilities, and improved contextual understanding.</p>
+
+<h2 id="word2vec-models">word2vec models</h2>
+<p>The common word2vec models are Skip-gram and Continuous Bag of Words(CBOW), consider the surrounding words or context of a target word when learning word embeddings. Both models have two curcial parameters, context word and center word vectors.</p>
+<h3 id="cbow">CBOW</h3>
+<p>This method takes the context of each word as the input and tries to predict the word corresponding to the context.
+<img src="/images/language-model/cbow.jpg" alt="CBOW" />
+The above model takes C context words. When $Wvn$ is used to calculate hidden layer inputs, we take an average over all these C context word inputs.</p>
+
+<p>The input or the context word is a one hot encoded vector of size V. The hidden layer contains N neurons and the output is again a V length vector with the elements being the softmax values.
+Let’s get the terms in the picture right:</p>
+<ul>
+  <li>$Wvn$ is the weight matrix that maps the input x to the hidden layer (V<em>N dimensional matrix)
+-$W’nv$ is the weight matrix that maps the hidden layer outputs to the final output layer (N</em>V dimensional matrix)</li>
+</ul>
+
+<h3 id="skip-gram">Skip-gram</h3>
+<p>This method takes the center words as the input and tries to predict the word corresponding to the center.
+<img src="/images/language-model/skip-gram.jpg" />
+The above model takes a center word as input and outputs C probability distributions of V probabilities, one for each context word.</p>
+
+<p>The more information related to Hierarchical Softmax and Skip-Gram Negative Sampling can be found <a href="https://arxiv.org/pdf/1411.2738.pdf">here</a>.</p>
+
+<h1 id="seq2seq">seq2seq</h1>
+<h2 id="recurrent-neural-networks">Recurrent Neural Networks</h2>
+<p><img src="/images/language-model/rnn.jpg" />
+The design of RNN solves the continuous input space, such as time continuous and space continuous input. Another difference with feed-forward neural networks is that the output format is also a sequence. Given a sequence of input $X = (X_1,X_2,…,X_T)$, and the standard RNN derives a sequence of outputs $y = (y_1, y_2, …, y_T)$ by the following equations and a more intuitive structure displayed above.</p>
+
+\[H_t = sigmoid(WH_{t-1}+UX_t)\]
+
+\[y_t = VH_t\]
+
+<p>Herein, units H, X, and y represent the hidden, input, and output units, respectively. The parameter W, U, and V are the weights that need to be learned by iterating the loss and backpropagation. The RNN structure is suitable for solving the input with any length since the parameters are predominated by W, U, and V . RNN maintains an activation function for each layer, making the model extremely deep when the input space is enormous. Extremely deep models lead to a series of problems, such as vanishing or exploding gradients, which makes the training of RNN difficult.</p>
+
+<h2 id="long-short-term-memory">Long Short-Term Memory</h2>
+<p>The central novel concept of LSTM architecture is the introduction of manipulated gates and short-term memory. These two concepts are excellent solutions to the difficulty of RNN in learning time dependencies beyond a few time steps long. The presence of the LSTM structure successfully solved the problem of gradient vanishing that appears during the training of the vanilla RNN.
+<img src="/images/language-model/lstm.jpg" /></p>
+
+<h3 id="forget-gate">Forget gate</h3>
+<p>The introduction of forget gates allows the LSTM to reset its state, remember common behavioral patterns, and forget unique behaviors, improving the model’s generality and ability to learn sequential tasks. The information from the previously hidden unit $H_{t-1}$ and current input $X_t$ are passed through the forget gate ($f_t$) and will be rescaled to 0 to 1. The value closer to 0 means forget, and approaching one means to keep. The computation formula is presented below (W and b represent weights and bias, respectively).</p>
+
+\[f_t = \sigma(W_f(H_{t-1}, X_t) + b_f)\]
+
+<h3 id="input-gate">Input gate</h3>
+
+<p>The design of the input gate is used to update the cell state. The input gate decides which values of $H_{t-1}$ and $X_t$ need to be updated for computing the new cell state $C_t$. The hidden state $H_{t-1}$ and input $X_t$ information are passed into the tanh function and rescaled between -1 and 1 to help regulate the model. Then we multiply the outputs from the sigmoid and the tanh functions. The output of the sigmoid function decides which information is essential to keep from the tanh output. The new cell state is the summation of the forget and input gate. The following equations describe the whole process.</p>
+
+\[i_t = \sigma(W_i(H_{t-1}, X_t) + b_i)\]
+
+\[C^{'}_t = tanh(W_c(H_{t-1}, X_t) + b_c)\]
+
+\[C_t = f_t C_{t-1} + i_t C^{'}_t\]
+
+<h3 id="output-gate">Output gate</h3>
+
+<p>The output gate determines the value of the following hidden state $H_t$, and $H_t$ contains the value of the previous input, so the value of $H_t$ can also be used to predict. The previous information $H_{t-1}$ and current input $X_t$ are passed into a sigmoid function, and then the updated cell state C is squeezed by the tanh function between -1 to 1. Then we multiply the output from the tanh and the sigmoid, and the outcome is $H_t$, then $C_t$ and $H_t$ move to the next time step. The corresponding formulas are as follows.</p>
+
+\[o_t = \sigma(W_o(H_{t-1}, X_t) + b_o)\]
+
+\[H_t = o_t tanh(C_t)\]
+
+<h2 id="transformers">Transformers</h2>
+<p>The Transformers model is a powerful and popular approach in the field of natural language processing (NLP). At the core of the Transformers model lies the self-attention mechanism, which enables the model to handle dependencies between different positions in the input sequence simultaneously. This capability makes Transformers highly effective in processing long text sequences and modeling semantic relationships.</p>
+
+<p>Firstly, the inputs will be transfer to input embedding, then add positional encoding as input of encode part. The encode part consist of two layer <code class="language-plaintext highlighter-rouge">Multi-Head Attention</code> and <code class="language-plaintext highlighter-rouge">Feed Forward</code>, and both with residual connection.  <code class="language-plaintext highlighter-rouge">Multi-head</code> learns more aspects of inputs, and multi-layer makes each layer learn different level attention representation. Decode module almost have the same structure except the masked attetion, since the model is not supposed to see the full outputs.</p>
+
+<p><img src="/images/language-model/transformers.jpg" /></p>
+
+<p>One of the most renowned Transformer models is BERT (Bidirectional Encoder Representations from Transformers), which is a pre-trained language model used for various NLP tasks such as text classification, named entity recognition, sentiment analysis, and more. BERT achieved breakthrough results in natural language understanding tasks and has been widely adopted both in industry and academic research.</p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="NLP" /><summary type="html"><![CDATA[This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.]]></summary></entry></feed>
