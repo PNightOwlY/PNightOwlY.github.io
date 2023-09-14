@@ -3,12 +3,11 @@ layout: post
 title: 'Language Model'
 date: 2022-09-20
 permalink: /posts/2022/09/language-model/
+excerpt: "This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models."
 tags:
   - NLP
 
 ---
-This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.
-
 
 word2vec
 ======

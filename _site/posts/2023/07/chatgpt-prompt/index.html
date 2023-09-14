@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Notes for ChatGPT Prompt Engineering for Developers | Ying Peng Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Notes for ChatGPT Prompt Engineering for Developers" />
+<meta name="author" content="Ying Peng" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A tutorial of using prompt." />
+<meta property="og:description" content="A tutorial of using prompt." />
+<link rel="canonical" href="http://localhost:4000/posts/2023/07/chatgpt-prompt/" />
+<meta property="og:url" content="http://localhost:4000/posts/2023/07/chatgpt-prompt/" />
+<meta property="og:site_name" content="Ying Peng Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-07-26T00:00:00+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Notes for ChatGPT Prompt Engineering for Developers" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Ying Peng"},"dateModified":"2023-07-26T00:00:00+08:00","datePublished":"2023-07-26T00:00:00+08:00","description":"A tutorial of using prompt.","headline":"Notes for ChatGPT Prompt Engineering for Developers","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/2023/07/chatgpt-prompt/"},"url":"http://localhost:4000/posts/2023/07/chatgpt-prompt/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Ying Peng Blog" />
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><div style="float:left; margin-top:10px; margin-right:10px;margin-bottom:10px;">
+      <a href="/feed.xml">
+        <img src="/images/head_icons/uu.svg.png" width="40">
+      </a>
+    </div>
+    <div style="float:left; margin-top:10px; margin-right:10px;">
+      <a class="site-title" rel="author" href="/">Ying Peng Blog</a>
+    </div><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          <a href="#" class="menu-icon">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 18 15" enable-background="new 0 0 18 15" xml:space="preserve">
+              <path fill="#505050" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0
+                h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#505050" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484
+                h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#505050" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0
+                c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </a><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Notes for ChatGPT Prompt Engineering for Developers</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-07-26T00:00:00+08:00" itemprop="datePublished">
+        Jul 26, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="basic-information">Basic Information</h1>
+<p>Course Name: <a href="https://learn.deeplearning.ai/chatgpt-prompt-eng/lesson/1/introduction">ChatGPT Prompt Engineering for Developers</a> <br />
+GitHub: <a href="https://github.com/ralphcajipe/chatgpt-prompt-engineering">chatgpt-prompt-engineering</a></p>
+
+<h1 id="two-types-of-large-language-modelsllms">Two types of large language models(LLMs)</h1>
+<h2 id="base-llm">Base LLM </h2>
+<ul>
+  <li>Predicts next word, based on text training data</li>
+</ul>
+
+<p><strong>Example1:</strong> <br />
+Once Upon a time, there was a unicorn <em>that lived in a magical forest with all her unicorn friends.</em></p>
+
+<h2 id="instruction-tuned-llm">Instruction Tuned LLM</h2>
+
+<ul>
+  <li>Tries to follow instructions.</li>
+  <li>Fine-tune on instructions and good attempts at following those instructions.</li>
+  <li>RLHF: Reinforcement learning with Human Feedback, to make the system better able to be helpful and follow instructions.</li>
+  <li>Helpful, honest, harmless.</li>
+</ul>
+
+<p><strong>Example 2:</strong> <br />
+What is the captial of France?
+<em>The captial of France is Paris.</em></p>
+
+<h1 id="guideline-for-prompting">Guideline for Prompting</h1>
+<h2 id="principles-of-prompting">Principles of Prompting</h2>
+<ul>
+  <li>Principle 1: Write clear and specfic instructions
+Longer prompt provides much more clarity and context for the model, which can actually lead to more detailed and relevant output.</li>
+</ul>
+
+<p><strong>Tactic 1: Use delimiters</strong></p>
+
+<p>Use delimiter to specific the content.</p>
+<ul>
+  <li>Triple quotes: “””</li>
+  <li>Triple backticks: ```</li>
+  <li>Triple dashes: —</li>
+  <li>Angle brackets: &lt;&gt;</li>
+  <li>XML tags:<tag> </tag></li>
+</ul>
+
+<p><strong>Tactic 2: Ask for structured output</strong></p>
+
+<p>HTML, JSON</p>
+
+<p><strong>Tactic 3: Chekc whether conditions are satisfied</strong></p>
+
+<p>Check assumptions required to do the task</p>
+
+<p><strong>Tactic 4: Few-shot prompting</strong></p>
+
+<ul>
+  <li>
+    <p>Give successful examples of completing tasks</p>
+  </li>
+  <li>
+    <p>Then ask model to perform the task</p>
+  </li>
+</ul>
+
+<h2 id="principle-2-give-the-model-time-to-think">Principle 2: Give the model time to think</h2>
+
+<p><strong>Tactic 1: Specify the steps required to complete a task (ask for output in a specified format)</strong></p>
+<ul>
+  <li>Step 1: …</li>
+  <li>Step 2: …</li>
+  <li>…</li>
+  <li>Step N: …</li>
+</ul>
+
+<p><strong>Tactic 2: Instruct the model to work out its own solution before rushing to a conclusion</strong></p>
+<ul>
+  <li>Model Limitations: Hallucinations</li>
+  <li>Hallucinations: Makes statements that sound plausible but are not true.</li>
+  <li>Reducing hallucinations: First find relevant information, then answer the question based on the relevant information. </li>
+</ul>
+
+<h1 id="iterative">Iterative </h1>
+<p><img src="/images/chatgpt-prompt-engineering/iterative.jpg" />
+Tuning the prompt is similar with the model tuning, that you need to adjust the prompt util reaching the expected results.</p>
+
+<p>Iterative process is trying something first, analyzing where the result does not give what you want. Then clarify instructions, give the model more time to think adn refine prompts with a batch of examples.</p>
+
+<h1 id="summary--inferring--transforming">Summary &amp; Inferring &amp; Transforming</h1>
+
+<ul>
+  <li>Sentiment  Recognition</li>
+  <li>Machine translation</li>
+  <li>Named Entity Recognition</li>
+  <li>Translation</li>
+  <li>Reading Comprehension</li>
+  <li>…</li>
+</ul>
+
+<p>LLM can do a lot NLP tasks by using the varities of Prompts.</p>
+
+<h1 id="expanding">Expanding</h1>
+<p><img src="/images/chatgpt-prompt-engineering/temperature.png" />
+Temperature: randomness of the model, when the temperature is low, it generate the reliable results, otherwise the answer become variety as the temperature higher.</p>
+
+<h1 id="chatbot">Chatbot</h1>
+
+<p>messages = [{“role”: “”, “content”:”” }]</p>
+
+<p>Roles: {system, user, assistant}</p>
+
+<p>A full conversation contains dialogs from user and assistant, the system role is to set behavior of assistants.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+<ul>
+  <li>A good prompt can help the model generate far better response.</li>
+  <li>Zero-shot heavily rely on model’s ability of understand and expressing. Few-shot could give some examples that model could follow and give more reasonable answer.</li>
+  <li>Chain Of Thought can be helpful on logic problems.</li>
+</ul>
+
+  </div><a class="u-url" href="/posts/2023/07/chatgpt-prompt/" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="http://localhost:4000/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+        <ul class="contact-list">
+          <li class="p-name">Ying Peng</li>
+          <li><a class="u-email" href="mailto:ying.peng.8170@student.uu.se">ying.peng.8170@student.uu.se</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
+
+
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+
+      processEscapes: true
+    }
+
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>

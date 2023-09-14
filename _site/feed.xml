@@ -1,5 +1,111 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-14T00:36:08+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ying Peng Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-</subtitle><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2023-09-12T18:07:56+08:00</published><updated>2023-09-12T18:07:56+08:00</updated><id>http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll.html"><![CDATA[<p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-15T00:28:08+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ying Peng Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</subtitle><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><entry><title type="html">Semantic Match Deep Dive 1</title><link href="http://localhost:4000/2023/09/14/semantic-match-deep-dive.html" rel="alternate" type="text/html" title="Semantic Match Deep Dive 1" /><published>2023-09-14T00:00:00+08:00</published><updated>2023-09-14T00:00:00+08:00</updated><id>http://localhost:4000/2023/09/14/semantic-match-deep-dive</id><content type="html" xml:base="http://localhost:4000/2023/09/14/semantic-match-deep-dive.html"><![CDATA[<h1 id="introduction-of-semantic-match">Introduction of Semantic Match</h1>
+<p>Semantic match is one of the basic tasks of NLP, the goal of the task is to determine whether two sentences have the same semantic meaning. Semantic match is widely used in natural language processing, such as question answering, information retrieval, machine reading comprehension, etc.</p>
+
+<p>Semantic match tasks can be divided into two categories:</p>
+<ul>
+  <li>sentence to sentence（S2S）</li>
+  <li>sentence to passage（S2P）</li>
+</ul>
+
+<h2 id="sentence-to-sentences2s">sentence to sentence（S2S）</h2>
+<p>The goal of sentence to sentence is to determine whether two sentences have the same semantic meaning. S2S tasks are widely used in intent recogniton in question answering system, such as Ecommerce, Finance, Medical etc. This task is semantic matching of short texts, such as “How much does it cost to buy a house?” and “How much does it cost to buy a house?”, so this type is relatively easier.</p>
+
+<h2 id="sentence-to-passages2p">sentence to passage（S2P）</h2>
+<p>The sentence to passage is to determine whether there is a semantic relationship between two sentences and the passage. Due to the bias in the length of sentences, there will be a certain degree of bias in short sentences in projection space.</p>
+
+<h2 id="semantic-match-models">Semantic Match Models</h2>
+<p>There are two common semantic matching models, one is a representation-based semantic matching model, and the other is an interaction-based semantic matching model.</p>
+
+<h3 id="represtation-based-model">Represtation-based model</h3>
+<p><img src="/images/semantic_match/sentence-bert.jpg" />
+The representation-based semantic matching model is represented by the two-tower model of Sentence-Bert<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. The left side is training process, the sentence first output by Bert, and then pooling to get the vector u, v, and then concatenate u, v, |u-v|, |u-v| is then multiply by a trainable weight to get final result through softmax. The right side is the inference process, use the model to get the vector of A(u) and B(v), and then get the cosine similarity and filtered by certain threshold.</p>
+
+\[o=softmax(W_t(u,,v,|u-v|)), W_t\in R^{3n\times k}\]
+
+<p>There are two implementaion of Sentence Bert, Bi-encoder and Dual-encoder respectively.</p>
+<ul>
+  <li>Bi-encoder: Compute the query and candidate vector representations with shared transformer encoder, and then compute the cosine similarity between the query and candidate vectors, to determine the similarity of the query and candidate. The typical Bert-like model is M3E, text2vec, BGE.</li>
+  <li>Dual-encoder: Compute the query and candidate vector representations with different transformer encoder.</li>
+</ul>
+
+<p>The two encoders in the Dual-encoder model have independent parameter spaces and state spaces, the Dual-encoder model can process and extract the features of Query and Candidate more flexibly. The training and inference costs of Dual-encoder models are usually higher than Bi-encoder models.</p>
+
+<h3 id="interaction-based-model">Interaction-based model</h3>
+<p><img src="/images/semantic_match/cross-encoder.jpg" />
+The interactive matching scheme is as shown on the right, which splices two pieces of text together as a single text for classification. Interactive matching allows two texts to be fully compared, so it performs much better, but it is inefficient in retrieval scenarios due to the on-site inference of vectors is required, and representation-based method can calculate and cache all Candidates in advance. During the retrieval process, only vector  for Query is computed, and then all Candidates are calculate the similarity. However, relatively speaking, the degree of interaction of characteristic formulas is Shallow and generally less effective than interactive.</p>
+
+<h3 id="multi-stage-retrieval">Multi-stage Retrieval</h3>
+<p>The more common way is to use the representation-based method to retrieve top-n sentences, and then use interaction-base method match the Query and top-n sentences to get the final ranking results.</p>
+
+<ul>
+  <li>retrieval stage: calcuate the cos similarity between Query and all sentence, and pick the top-n sentences as candidates.</li>
+  <li>ranking stage: concat the Query and top-n sentences as a single text respectively, and use Cross Encoder to get the score of the text.</li>
+</ul>
+
+<h2 id="recommend-thesis">Recommend thesis</h2>
+<ol>
+  <li>Dense Passage Retrieval for Open-Domain Question Answering<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></li>
+  <li>RocketQA: An Optimized Training Approach to Dense Passage Retrieval for Open-Domain Question Answering<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup></li>
+  <li>Unsupervised Corpus Aware Language Model Pre-training for Dense Passage Retrieval<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup></li>
+  <li>HLATR: Enhance Multi-stage Text Retrieval with Hybrid List Aware Transformer Reranking<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup></li>
+</ol>
+
+<h3 id="dense-passage-retrieval">Dense Passage Retrieval</h3>
+<p><img src="/images/semantic_match/dpr.jpg" />
+Dense Passage Retrieval，use dual-encoder encode query and passages respectively，and compute similarity then update the model’s weight. The loss is negative log likelihood as following.</p>
+
+\[L(q_i, p_i^{+},p_{i,1}^{-},p_{i,2}^{-},...,p_{i,n}^{-}) = -log\frac{e^{sim(q_i, p_i^{+})}}{sim(q_i, p_i^{+}) + \sum_{j=1}^{n}e^{sim(q_i, p_{i,j}^{-})}}\]
+
+<p>The proposed three way to generate negatives:</p>
+
+<ul>
+  <li>random pick</li>
+  <li>BM25 to pick top-k，remove the origin answer</li>
+  <li>in-batch negatives, batch_size=64，then there is 63 negatvies，except the query’s positive, all can be negative.</li>
+</ul>
+
+<h3 id="rocketqa">RocketQA</h3>
+<p>Dense passage retrieval下的训练和推理之间的差异，即训练过程中只是选取了部分的样本作为负例，而推理过程中则是对所有的样本进行比较。同时，在进行训练的过程中negative samples往往存在了大量的false negative samples，即标注为非答案文本的文段也是可以作为答案的。</p>
+
+<p>针对上面这两个问题，文章提出了三个优化策略Cross-batch negatives, Denoised Hard Negatives, Data Augmentation.</p>
+
+<p>Cross-batch negatives主要做的就是将m台上的GPU机器上的n个samples都进行embeddings计算，然后下发到每一个GPU机器上，那么每一个训练样本都有m*n-1个负样本，对比之前的in-batch negatives的n-1个负样本，这样极大地增加了负例样本的学习。</p>
+
+<p>Denoised Hard Negatives，先train一个dual encoder来召回negatives， 然后再训练一个cross encoder来去除false negatives，这样让模型学习到负样本尽可能是对的，相当于是做了一次数据清洗。</p>
+
+<p>Data Augmentation就是用已经训练好的cross encoder对一些未标注数据进行标注，类似于semi-supervised learning，来增大数据量。</p>
+
+<p>这种方式在测评数据集上的表现不俗，但是对于机器的要求比较高，就比如第一步的Cross-batch negatives来说，这需要尽可能地增加机器的数目，同时对于单个GPU机器来说，增加了大批量的negatives，对于GPU的显存来说是一个很大的挑战。后面的train dual encoder的方式也是一个多阶段的训练，相对来说训练的成本比较高。</p>
+
+<h3 id="cocondense">coCondense</h3>
+<p>Condenser 预训练架构，它通过 LM 预训练学习将信息压缩到密集向量中。最重要的是，作者进一步提出了 coCondenser，它添加了一个无监督的语料库级对比损失来预热段落嵌入空间。它显示出与 RocketQA 相当的性能，RocketQA 是最先进的、经过精心设计的系统。coCondense使用简单的小批量微调，无监督学习，即随机从一笔文档中抽出文本片段，然后训练模型。目标是让相同文档出来的CLS的embedding要尽可能的相似，而来自不同的文档出来embedding的要尽可能不相近。</p>
+
+<h3 id="hlatr">HLATR</h3>
+<p><img src="/images/semantic_match/hlatr.jpg" />
+先检索再排序是一种比较常用的文本检索手段，但是常见的做法通常是只关注于优化某一个阶段的模型来提升整体的检索效果。但是直接将多个阶段耦合起来进行优化的却还没有被很深入的研究。作者提出了一个轻量级的HLATR框架，可以高效地进行检索，并在两个大数据集上进行了验证。这里作者提到两个模型虽然都是进行排序，但是模型的关注的点不一样，表征式的模型（retriever）偏向于粗颗粒度特征，交互式的模型（interaction）偏向于query和document之间的信息交互。同时作者做了一个简单的weighted combination，就是给予召回和排序这两个阶段不同的权重，对于整体的召回效果也是有提升的。</p>
+
+<h2 id="references">References</h2>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p><a href="https://arxiv.org/pdf/1908.10084.pdf">Sentence-Bert:Sentence Embeddings using Siamese BERT-Networks</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p><a href="https://arxiv.org/abs/2004.04906">Dense Passage Retrieval for Open-Domain Question Answering</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p><a href="https://aclanthology.org/2021.naacl-main.466/">RocketQA: An Optimized Training Approach to Dense Passage Retrieval for Open-Domain Question Answering</a> <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p><a href="https://arxiv.org/pdf/2108.05540.pdf">Unsupervised Corpus Aware Language Model Pre-training for Dense Passage Retrieval</a> <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p><a href="https://arxiv.org/pdf/2205.10569.pdf">HLATR: Enhance Multi-stage Text Retrieval with Hybrid List Aware Transformer Reranking</a> <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="NLP" /><summary type="html"><![CDATA[A detailed introduction of semantic match on both sentence to sentence(s2s) and sentence to passage(s2p) tasks.]]></summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2023-09-12T18:07:56+08:00</published><updated>2023-09-12T18:07:56+08:00</updated><id>http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/09/12/welcome-to-jekyll.html"><![CDATA[<p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
 
 <p>Jekyll requires blog post files to be named according to the following format:</p>
 
@@ -15,97 +121,123 @@
 <span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
 <span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
 
-<p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.]]></summary></entry><entry><title type="html">Language Model</title><link href="http://localhost:4000/posts/2022/09/language-model/" rel="alternate" type="text/html" title="Language Model" /><published>2022-09-20T00:00:00+08:00</published><updated>2022-09-20T00:00:00+08:00</updated><id>http://localhost:4000/posts/2022/09/language-model</id><content type="html" xml:base="http://localhost:4000/posts/2022/09/language-model/"><![CDATA[<p>This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.</p>
+<p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.]]></summary></entry><entry><title type="html">Notes for ChatGPT Prompt Engineering for Developers</title><link href="http://localhost:4000/posts/2023/07/chatgpt-prompt/" rel="alternate" type="text/html" title="Notes for ChatGPT Prompt Engineering for Developers" /><published>2023-07-26T00:00:00+08:00</published><updated>2023-07-26T00:00:00+08:00</updated><id>http://localhost:4000/posts/2023/07/chatgpt-prompt</id><content type="html" xml:base="http://localhost:4000/posts/2023/07/chatgpt-prompt/"><![CDATA[<h1 id="basic-information">Basic Information</h1>
+<p>Course Name: <a href="https://learn.deeplearning.ai/chatgpt-prompt-eng/lesson/1/introduction">ChatGPT Prompt Engineering for Developers</a> <br />
+GitHub: <a href="https://github.com/ralphcajipe/chatgpt-prompt-engineering">chatgpt-prompt-engineering</a></p>
 
-<h1 id="word2vec">word2vec</h1>
-<p>Word2Vec is a popular algorithm used in Natural Language Processing (NLP) for generating word embeddings. We need Word2Vec for several reasons:</p>
-
-<ol>
-  <li>
-    <p>Word representation: Word2Vec allows us to represent words as dense vectors in a continuous vector space. This representation captures semantic and syntactic relationships between words, enabling machines to better understand and process natural language.</p>
-  </li>
-  <li>
-    <p>Feature extraction: Word2Vec captures meaningful linguistic features from the input text, such as word similarities and contextual relationships. These features can be used as input for various downstream NLP tasks like sentiment analysis, text classification, machine translation, and named entity recognition, improving their performance.</p>
-  </li>
-  <li>
-    <p>Dimensionality reduction: Word2Vec reduces the high-dimensional space of words into a lower-dimensional space while preserving semantic relationships. This reduction makes the computations more efficient and manageable, especially when dealing with large amounts of text data.</p>
-  </li>
-  <li>
-    <p>Contextual understanding: Word2Vec models, such as Skip-gram and Continuous Bag of Words (CBOW), consider the surrounding words or context of a target word when learning word embeddings. This contextual understanding enables the model to capture word meanings based on their surrounding words and improve the accuracy of semantic relationships.</p>
-  </li>
-</ol>
-
-<p>Overall, Word2Vec plays a crucial role in various NLP applications by providing efficient word representations, feature extraction capabilities, and improved contextual understanding.</p>
-
-<h2 id="word2vec-models">word2vec models</h2>
-<p>The common word2vec models are Skip-gram and Continuous Bag of Words(CBOW), consider the surrounding words or context of a target word when learning word embeddings. Both models have two curcial parameters, context word and center word vectors.</p>
-<h3 id="cbow">CBOW</h3>
-<p>This method takes the context of each word as the input and tries to predict the word corresponding to the context.
-<img src="/images/language-model/cbow.jpg" alt="CBOW" />
-The above model takes C context words. When $Wvn$ is used to calculate hidden layer inputs, we take an average over all these C context word inputs.</p>
-
-<p>The input or the context word is a one hot encoded vector of size V. The hidden layer contains N neurons and the output is again a V length vector with the elements being the softmax values.
-Let’s get the terms in the picture right:</p>
+<h1 id="two-types-of-large-language-modelsllms">Two types of large language models(LLMs)</h1>
+<h2 id="base-llm">Base LLM </h2>
 <ul>
-  <li>$Wvn$ is the weight matrix that maps the input x to the hidden layer (V<em>N dimensional matrix)
--$W’nv$ is the weight matrix that maps the hidden layer outputs to the final output layer (N</em>V dimensional matrix)</li>
+  <li>Predicts next word, based on text training data</li>
 </ul>
 
-<h3 id="skip-gram">Skip-gram</h3>
-<p>This method takes the center words as the input and tries to predict the word corresponding to the center.
-<img src="/images/language-model/skip-gram.jpg" />
-The above model takes a center word as input and outputs C probability distributions of V probabilities, one for each context word.</p>
+<p><strong>Example1:</strong> <br />
+Once Upon a time, there was a unicorn <em>that lived in a magical forest with all her unicorn friends.</em></p>
 
-<p>The more information related to Hierarchical Softmax and Skip-Gram Negative Sampling can be found <a href="https://arxiv.org/pdf/1411.2738.pdf">here</a>.</p>
+<h2 id="instruction-tuned-llm">Instruction Tuned LLM</h2>
 
-<h1 id="seq2seq">seq2seq</h1>
-<h2 id="recurrent-neural-networks">Recurrent Neural Networks</h2>
-<p><img src="/images/language-model/rnn.jpg" />
-The design of RNN solves the continuous input space, such as time continuous and space continuous input. Another difference with feed-forward neural networks is that the output format is also a sequence. Given a sequence of input $X = (X_1,X_2,…,X_T)$, and the standard RNN derives a sequence of outputs $y = (y_1, y_2, …, y_T)$ by the following equations and a more intuitive structure displayed above.</p>
+<ul>
+  <li>Tries to follow instructions.</li>
+  <li>Fine-tune on instructions and good attempts at following those instructions.</li>
+  <li>RLHF: Reinforcement learning with Human Feedback, to make the system better able to be helpful and follow instructions.</li>
+  <li>Helpful, honest, harmless.</li>
+</ul>
 
-\[H_t = sigmoid(WH_{t-1}+UX_t)\]
+<p><strong>Example 2:</strong> <br />
+What is the captial of France?
+<em>The captial of France is Paris.</em></p>
 
-\[y_t = VH_t\]
+<h1 id="guideline-for-prompting">Guideline for Prompting</h1>
+<h2 id="principles-of-prompting">Principles of Prompting</h2>
+<ul>
+  <li>Principle 1: Write clear and specfic instructions
+Longer prompt provides much more clarity and context for the model, which can actually lead to more detailed and relevant output.</li>
+</ul>
 
-<p>Herein, units H, X, and y represent the hidden, input, and output units, respectively. The parameter W, U, and V are the weights that need to be learned by iterating the loss and backpropagation. The RNN structure is suitable for solving the input with any length since the parameters are predominated by W, U, and V . RNN maintains an activation function for each layer, making the model extremely deep when the input space is enormous. Extremely deep models lead to a series of problems, such as vanishing or exploding gradients, which makes the training of RNN difficult.</p>
+<p><strong>Tactic 1: Use delimiters</strong></p>
 
-<h2 id="long-short-term-memory">Long Short-Term Memory</h2>
-<p>The central novel concept of LSTM architecture is the introduction of manipulated gates and short-term memory. These two concepts are excellent solutions to the difficulty of RNN in learning time dependencies beyond a few time steps long. The presence of the LSTM structure successfully solved the problem of gradient vanishing that appears during the training of the vanilla RNN.
-<img src="/images/language-model/lstm.jpg" /></p>
+<p>Use delimiter to specific the content.</p>
+<ul>
+  <li>Triple quotes: “””</li>
+  <li>Triple backticks: ```</li>
+  <li>Triple dashes: —</li>
+  <li>Angle brackets: &lt;&gt;</li>
+  <li>XML tags:<tag> </tag></li>
+</ul>
 
-<h3 id="forget-gate">Forget gate</h3>
-<p>The introduction of forget gates allows the LSTM to reset its state, remember common behavioral patterns, and forget unique behaviors, improving the model’s generality and ability to learn sequential tasks. The information from the previously hidden unit $H_{t-1}$ and current input $X_t$ are passed through the forget gate ($f_t$) and will be rescaled to 0 to 1. The value closer to 0 means forget, and approaching one means to keep. The computation formula is presented below (W and b represent weights and bias, respectively).</p>
+<p><strong>Tactic 2: Ask for structured output</strong></p>
 
-\[f_t = \sigma(W_f(H_{t-1}, X_t) + b_f)\]
+<p>HTML, JSON</p>
 
-<h3 id="input-gate">Input gate</h3>
+<p><strong>Tactic 3: Chekc whether conditions are satisfied</strong></p>
 
-<p>The design of the input gate is used to update the cell state. The input gate decides which values of $H_{t-1}$ and $X_t$ need to be updated for computing the new cell state $C_t$. The hidden state $H_{t-1}$ and input $X_t$ information are passed into the tanh function and rescaled between -1 and 1 to help regulate the model. Then we multiply the outputs from the sigmoid and the tanh functions. The output of the sigmoid function decides which information is essential to keep from the tanh output. The new cell state is the summation of the forget and input gate. The following equations describe the whole process.</p>
+<p>Check assumptions required to do the task</p>
 
-\[i_t = \sigma(W_i(H_{t-1}, X_t) + b_i)\]
+<p><strong>Tactic 4: Few-shot prompting</strong></p>
 
-\[C^{'}_t = tanh(W_c(H_{t-1}, X_t) + b_c)\]
+<ul>
+  <li>
+    <p>Give successful examples of completing tasks</p>
+  </li>
+  <li>
+    <p>Then ask model to perform the task</p>
+  </li>
+</ul>
 
-\[C_t = f_t C_{t-1} + i_t C^{'}_t\]
+<h2 id="principle-2-give-the-model-time-to-think">Principle 2: Give the model time to think</h2>
 
-<h3 id="output-gate">Output gate</h3>
+<p><strong>Tactic 1: Specify the steps required to complete a task (ask for output in a specified format)</strong></p>
+<ul>
+  <li>Step 1: …</li>
+  <li>Step 2: …</li>
+  <li>…</li>
+  <li>Step N: …</li>
+</ul>
 
-<p>The output gate determines the value of the following hidden state $H_t$, and $H_t$ contains the value of the previous input, so the value of $H_t$ can also be used to predict. The previous information $H_{t-1}$ and current input $X_t$ are passed into a sigmoid function, and then the updated cell state C is squeezed by the tanh function between -1 to 1. Then we multiply the output from the tanh and the sigmoid, and the outcome is $H_t$, then $C_t$ and $H_t$ move to the next time step. The corresponding formulas are as follows.</p>
+<p><strong>Tactic 2: Instruct the model to work out its own solution before rushing to a conclusion</strong></p>
+<ul>
+  <li>Model Limitations: Hallucinations</li>
+  <li>Hallucinations: Makes statements that sound plausible but are not true.</li>
+  <li>Reducing hallucinations: First find relevant information, then answer the question based on the relevant information. </li>
+</ul>
 
-\[o_t = \sigma(W_o(H_{t-1}, X_t) + b_o)\]
+<h1 id="iterative">Iterative </h1>
+<p><img src="/images/chatgpt-prompt-engineering/iterative.jpg" />
+Tuning the prompt is similar with the model tuning, that you need to adjust the prompt util reaching the expected results.</p>
 
-\[H_t = o_t tanh(C_t)\]
+<p>Iterative process is trying something first, analyzing where the result does not give what you want. Then clarify instructions, give the model more time to think adn refine prompts with a batch of examples.</p>
 
-<h2 id="transformers">Transformers</h2>
-<p>The Transformers model is a powerful and popular approach in the field of natural language processing (NLP). At the core of the Transformers model lies the self-attention mechanism, which enables the model to handle dependencies between different positions in the input sequence simultaneously. This capability makes Transformers highly effective in processing long text sequences and modeling semantic relationships.</p>
+<h1 id="summary--inferring--transforming">Summary &amp; Inferring &amp; Transforming</h1>
 
-<p>Firstly, the inputs will be transfer to input embedding, then add positional encoding as input of encode part. The encode part consist of two layer <code class="language-plaintext highlighter-rouge">Multi-Head Attention</code> and <code class="language-plaintext highlighter-rouge">Feed Forward</code>, and both with residual connection.  <code class="language-plaintext highlighter-rouge">Multi-head</code> learns more aspects of inputs, and multi-layer makes each layer learn different level attention representation. Decode module almost have the same structure except the masked attetion, since the model is not supposed to see the full outputs.</p>
+<ul>
+  <li>Sentiment  Recognition</li>
+  <li>Machine translation</li>
+  <li>Named Entity Recognition</li>
+  <li>Translation</li>
+  <li>Reading Comprehension</li>
+  <li>…</li>
+</ul>
 
-<p><img src="/images/language-model/transformers.jpg" /></p>
+<p>LLM can do a lot NLP tasks by using the varities of Prompts.</p>
 
-<p>One of the most renowned Transformer models is BERT (Bidirectional Encoder Representations from Transformers), which is a pre-trained language model used for various NLP tasks such as text classification, named entity recognition, sentiment analysis, and more. BERT achieved breakthrough results in natural language understanding tasks and has been widely adopted both in industry and academic research.</p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="NLP" /><summary type="html"><![CDATA[This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.]]></summary></entry><entry><title type="html">Language Model</title><link href="http://localhost:4000/posts/2022/09/language-model/" rel="alternate" type="text/html" title="Language Model" /><published>2022-09-20T00:00:00+08:00</published><updated>2022-09-20T00:00:00+08:00</updated><id>http://localhost:4000/posts/2022/09/language-model</id><content type="html" xml:base="http://localhost:4000/posts/2022/09/language-model/"><![CDATA[<p>This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.</p>
+<h1 id="expanding">Expanding</h1>
+<p><img src="/images/chatgpt-prompt-engineering/temperature.png" />
+Temperature: randomness of the model, when the temperature is low, it generate the reliable results, otherwise the answer become variety as the temperature higher.</p>
 
-<h1 id="word2vec">word2vec</h1>
+<h1 id="chatbot">Chatbot</h1>
+
+<p>messages = [{“role”: “”, “content”:”” }]</p>
+
+<p>Roles: {system, user, assistant}</p>
+
+<p>A full conversation contains dialogs from user and assistant, the system role is to set behavior of assistants.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+<ul>
+  <li>A good prompt can help the model generate far better response.</li>
+  <li>Zero-shot heavily rely on model’s ability of understand and expressing. Few-shot could give some examples that model could follow and give more reasonable answer.</li>
+  <li>Chain Of Thought can be helpful on logic problems.</li>
+</ul>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="[&quot;NLP&quot;]" /><summary type="html"><![CDATA[A tutorial of using prompt.]]></summary></entry><entry><title type="html">Language Model</title><link href="http://localhost:4000/posts/2022/09/language-model/" rel="alternate" type="text/html" title="Language Model" /><published>2022-09-20T00:00:00+08:00</published><updated>2022-09-20T00:00:00+08:00</updated><id>http://localhost:4000/posts/2022/09/language-model</id><content type="html" xml:base="http://localhost:4000/posts/2022/09/language-model/"><![CDATA[<h1 id="word2vec">word2vec</h1>
 <p>Word2Vec is a popular algorithm used in Natural Language Processing (NLP) for generating word embeddings. We need Word2Vec for several reasons:</p>
 
 <ol>
