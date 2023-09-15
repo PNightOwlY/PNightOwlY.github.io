@@ -66,24 +66,25 @@ The proposed three way to generate negatives:
 - in-batch negatives, batch_size=64，then there is 63 negatvies，except the query's positive, all can be negative.
 
 ### RocketQA
-Dense passage retrieval下的训练和推理之间的差异，即训练过程中只是选取了部分的样本作为负例，而推理过程中则是对所有的样本进行比较。同时，在进行训练的过程中negative samples往往存在了大量的false negative samples，即标注为非答案文本的文段也是可以作为答案的。
+In the field of dense passage retrieval, there exists a difference between training and inference. In training, only a subset of samples is selected as negative examples, while during inference, all samples are compared. Additionally, during training, there are often a large number of false negative samples, which can be used as positive samples.
 
-针对上面这两个问题，文章提出了三个优化策略Cross-batch negatives, Denoised Hard Negatives, Data Augmentation.
+To alleivate these two problems, the author has proposed three optimization strategies: Cross-batch negatives, Denoised Hard Negatives, Data Augmentation.
 
-Cross-batch negatives主要做的就是将m台上的GPU机器上的n个samples都进行embeddings计算，然后下发到每一个GPU机器上，那么每一个训练样本都有m*n-1个负样本，对比之前的in-batch negatives的n-1个负样本，这样极大地增加了负例样本的学习。
+1. **Cross-batch negatives** firstly compute the embeddings of n samples in m GPUs separately, and then diliver to each GPU. Thus, each training sample has m*n-1 negative samples, which is much larger than the in-batch negatives.
 
-Denoised Hard Negatives，先train一个dual encoder来召回negatives， 然后再训练一个cross encoder来去除false negatives，这样让模型学习到负样本尽可能是对的，相当于是做了一次数据清洗。
+2. **Denoised Hard Negatives** trains a dual encoder to retrieval negatives, and then train a cross encoder to remove false negatives. In this way, the negatives could be right possible, which is a good way to do data cleaning.
 
-Data Augmentation就是用已经训练好的cross encoder对一些未标注数据进行标注，类似于semi-supervised learning，来增大数据量。
+3. **Data Augmentation** uses the cross encoder to label the unlabeled data, which is a semi-supervised learning method, to enlarge the data scale.
 
-这种方式在测评数据集上的表现不俗，但是对于机器的要求比较高，就比如第一步的Cross-batch negatives来说，这需要尽可能地增加机器的数目，同时对于单个GPU机器来说，增加了大批量的negatives，对于GPU的显存来说是一个很大的挑战。后面的train dual encoder的方式也是一个多阶段的训练，相对来说训练的成本比较高。
+This approach performs advanced on evaluation datasets, but it places high demands on computational resources. For instance, the Cross-batch negatives requires a large number of GPUs. The subsequent training of the dual encoder of the dual encoder also involves a multi-stage process, in curring relatively higher training costs.
 
 ### coCondense
-Condenser 预训练架构，它通过 LM 预训练学习将信息压缩到密集向量中。最重要的是，作者进一步提出了 coCondenser，它添加了一个无监督的语料库级对比损失来预热段落嵌入空间。它显示出与 RocketQA 相当的性能，RocketQA 是最先进的、经过精心设计的系统。coCondense使用简单的小批量微调，无监督学习，即随机从一笔文档中抽出文本片段，然后训练模型。目标是让相同文档出来的CLS的embedding要尽可能的相似，而来自不同的文档出来embedding的要尽可能不相近。
+Condenser is a new pre-training architecture that compresses information into dense vectors through LM pre-training. Most importantly, the authors further propose coCondenser, which adds an unsupervised corpus-level constrastive loss to pre-train paragraph embeddings. It demonstrates performance comparable to RocketQA, the state-of-the-art, carefully designed system. coCondense employs simple small-batch fine-tuning and unsupervised learning, where text snippets are randomly sampled from a document and the model is trained. The objective is to make the embeddings of the CLS token from the same document as similar as possible, while those from different documents should be as dissimilar as possible.
+
 
 ### HLATR
 <img src="/images/semantic_match/hlatr.jpg">
-先检索再排序是一种比较常用的文本检索手段，但是常见的做法通常是只关注于优化某一个阶段的模型来提升整体的检索效果。但是直接将多个阶段耦合起来进行优化的却还没有被很深入的研究。作者提出了一个轻量级的HLATR框架，可以高效地进行检索，并在两个大数据集上进行了验证。这里作者提到两个模型虽然都是进行排序，但是模型的关注的点不一样，表征式的模型（retriever）偏向于粗颗粒度特征，交互式的模型（interaction）偏向于query和document之间的信息交互。同时作者做了一个简单的weighted combination，就是给予召回和排序这两个阶段不同的权重，对于整体的召回效果也是有提升的。
+First retrieval and then rerank is a common way to do document retrieval, where the focus is often on optimizing individual models in each stage to improve overall retrieval performance. However, there hasn't been much in-depth research on directly coupling multiple stages together for optimization. The authors propose a lightweight HLATR framework that enables efficient retrieval and validate it on two large datasets. Here, the authors mention that although both models are involved in ranking, they have different focuses. The representation-based model (retriever) leans towards coarse-grained features, while the interaction-based model (interaction) emphasizes the interaction between query and document. Additionally, the authors perform a simple weighted combination, assigning different weights to the recall and ranking stages, which also improves overall recall performance.
 
 ## References
 [^1]: [Sentence-Bert:Sentence Embeddings using Siamese BERT-Networks](https://arxiv.org/pdf/1908.10084.pdf)    
