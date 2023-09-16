@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-15T00:28:08+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ying Peng Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-16T23:35:38+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ying Peng Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
 </subtitle><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><entry><title type="html">Semantic Match Deep Dive 1</title><link href="http://localhost:4000/2023/09/14/semantic-match-deep-dive.html" rel="alternate" type="text/html" title="Semantic Match Deep Dive 1" /><published>2023-09-14T00:00:00+08:00</published><updated>2023-09-14T00:00:00+08:00</updated><id>http://localhost:4000/2023/09/14/semantic-match-deep-dive</id><content type="html" xml:base="http://localhost:4000/2023/09/14/semantic-match-deep-dive.html"><![CDATA[<h1 id="introduction-of-semantic-match">Introduction of Semantic Match</h1>
 <p>Semantic match is one of the basic tasks of NLP, the goal of the task is to determine whether two sentences have the same semantic meaning. Semantic match is widely used in natural language processing, such as question answering, information retrieval, machine reading comprehension, etc.</p>
 
@@ -66,24 +66,30 @@ Dense Passage Retrieval，use dual-encoder encode query and passages respectivel
 </ul>
 
 <h3 id="rocketqa">RocketQA</h3>
-<p>Dense passage retrieval下的训练和推理之间的差异，即训练过程中只是选取了部分的样本作为负例，而推理过程中则是对所有的样本进行比较。同时，在进行训练的过程中negative samples往往存在了大量的false negative samples，即标注为非答案文本的文段也是可以作为答案的。</p>
+<p>In the field of dense passage retrieval, there exists a difference between training and inference. In training, only a subset of samples is selected as negative examples, while during inference, all samples are compared. Additionally, during training, there are often a large number of false negative samples, which can be used as positive samples.</p>
 
-<p>针对上面这两个问题，文章提出了三个优化策略Cross-batch negatives, Denoised Hard Negatives, Data Augmentation.</p>
+<p>To alleivate these two problems, the author has proposed three optimization strategies: Cross-batch negatives, Denoised Hard Negatives, Data Augmentation.</p>
 
-<p>Cross-batch negatives主要做的就是将m台上的GPU机器上的n个samples都进行embeddings计算，然后下发到每一个GPU机器上，那么每一个训练样本都有m*n-1个负样本，对比之前的in-batch negatives的n-1个负样本，这样极大地增加了负例样本的学习。</p>
+<ol>
+  <li>
+    <p><strong>Cross-batch negatives</strong> firstly compute the embeddings of n samples in m GPUs separately, and then diliver to each GPU. Thus, each training sample has m*n-1 negative samples, which is much larger than the in-batch negatives.</p>
+  </li>
+  <li>
+    <p><strong>Denoised Hard Negatives</strong> trains a dual encoder to retrieval negatives, and then train a cross encoder to remove false negatives. In this way, the negatives could be right possible, which is a good way to do data cleaning.</p>
+  </li>
+  <li>
+    <p><strong>Data Augmentation</strong> uses the cross encoder to label the unlabeled data, which is a semi-supervised learning method, to enlarge the data scale.</p>
+  </li>
+</ol>
 
-<p>Denoised Hard Negatives，先train一个dual encoder来召回negatives， 然后再训练一个cross encoder来去除false negatives，这样让模型学习到负样本尽可能是对的，相当于是做了一次数据清洗。</p>
-
-<p>Data Augmentation就是用已经训练好的cross encoder对一些未标注数据进行标注，类似于semi-supervised learning，来增大数据量。</p>
-
-<p>这种方式在测评数据集上的表现不俗，但是对于机器的要求比较高，就比如第一步的Cross-batch negatives来说，这需要尽可能地增加机器的数目，同时对于单个GPU机器来说，增加了大批量的negatives，对于GPU的显存来说是一个很大的挑战。后面的train dual encoder的方式也是一个多阶段的训练，相对来说训练的成本比较高。</p>
+<p>This approach performs advanced on evaluation datasets, but it places high demands on computational resources. For instance, the Cross-batch negatives requires a large number of GPUs. The subsequent training of the dual encoder of the dual encoder also involves a multi-stage process, in curring relatively higher training costs.</p>
 
 <h3 id="cocondense">coCondense</h3>
-<p>Condenser 预训练架构，它通过 LM 预训练学习将信息压缩到密集向量中。最重要的是，作者进一步提出了 coCondenser，它添加了一个无监督的语料库级对比损失来预热段落嵌入空间。它显示出与 RocketQA 相当的性能，RocketQA 是最先进的、经过精心设计的系统。coCondense使用简单的小批量微调，无监督学习，即随机从一笔文档中抽出文本片段，然后训练模型。目标是让相同文档出来的CLS的embedding要尽可能的相似，而来自不同的文档出来embedding的要尽可能不相近。</p>
+<p>Condenser is a new pre-training architecture that compresses information into dense vectors through LM pre-training. Most importantly, the authors further propose coCondenser, which adds an unsupervised corpus-level constrastive loss to pre-train paragraph embeddings. It demonstrates performance comparable to RocketQA, the state-of-the-art, carefully designed system. coCondense employs simple small-batch fine-tuning and unsupervised learning, where text snippets are randomly sampled from a document and the model is trained. The objective is to make the embeddings of the CLS token from the same document as similar as possible, while those from different documents should be as dissimilar as possible.</p>
 
 <h3 id="hlatr">HLATR</h3>
 <p><img src="/images/semantic_match/hlatr.jpg" />
-先检索再排序是一种比较常用的文本检索手段，但是常见的做法通常是只关注于优化某一个阶段的模型来提升整体的检索效果。但是直接将多个阶段耦合起来进行优化的却还没有被很深入的研究。作者提出了一个轻量级的HLATR框架，可以高效地进行检索，并在两个大数据集上进行了验证。这里作者提到两个模型虽然都是进行排序，但是模型的关注的点不一样，表征式的模型（retriever）偏向于粗颗粒度特征，交互式的模型（interaction）偏向于query和document之间的信息交互。同时作者做了一个简单的weighted combination，就是给予召回和排序这两个阶段不同的权重，对于整体的召回效果也是有提升的。</p>
+First retrieval and then rerank is a common way to do document retrieval, where the focus is often on optimizing individual models in each stage to improve overall retrieval performance. However, there hasn’t been much in-depth research on directly coupling multiple stages together for optimization. The authors propose a lightweight HLATR framework that enables efficient retrieval and validate it on two large datasets. Here, the authors mention that although both models are involved in ranking, they have different focuses. The representation-based model (retriever) leans towards coarse-grained features, while the interaction-based model (interaction) emphasizes the interaction between query and document. Additionally, the authors perform a simple weighted combination, assigning different weights to the recall and ranking stages, which also improves overall recall performance.</p>
 
 <h2 id="references">References</h2>
 
@@ -323,4 +329,79 @@ The design of RNN solves the continuous input space, such as time continuous and
 
 <p><img src="/images/language-model/transformers.jpg" /></p>
 
-<p>One of the most renowned Transformer models is BERT (Bidirectional Encoder Representations from Transformers), which is a pre-trained language model used for various NLP tasks such as text classification, named entity recognition, sentiment analysis, and more. BERT achieved breakthrough results in natural language understanding tasks and has been widely adopted both in industry and academic research.</p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="NLP" /><summary type="html"><![CDATA[This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.]]></summary></entry></feed>
+<p>One of the most renowned Transformer models is BERT (Bidirectional Encoder Representations from Transformers), which is a pre-trained language model used for various NLP tasks such as text classification, named entity recognition, sentiment analysis, and more. BERT achieved breakthrough results in natural language understanding tasks and has been widely adopted both in industry and academic research.</p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="NLP" /><summary type="html"><![CDATA[This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.]]></summary></entry><entry><title type="html">Design and Implementation of Automated Orchestration Architecture</title><link href="http://localhost:4000/2021/06/15/Design-and-Implementation-of-Automated-Orchestration-Architecture.html" rel="alternate" type="text/html" title="Design and Implementation of Automated Orchestration Architecture" /><published>2021-06-15T00:00:00+08:00</published><updated>2021-06-15T00:00:00+08:00</updated><id>http://localhost:4000/2021/06/15/Design-and-Implementation-of-Automated-Orchestration-Architecture</id><content type="html" xml:base="http://localhost:4000/2021/06/15/Design-and-Implementation-of-Automated-Orchestration-Architecture.html"><![CDATA[<h2 id="architecture-of-working-environment">Architecture of Working Environment</h2>
+<p><img src="/images/orchestration/Architecture.png" />
+The framework of our project is shown above. We have 5 VMs in total: One VM as the orchestrationVM, development cluster(several containers in the development VM and a Ray cluster consisting of 2 VMs),production cluster(a Docker Swarm cluster consisting of 2 VMs).</p>
+
+<p>An important part of our framework is the development cluster(Ray cluster). Since the most time-consumingpart of machine learning model training is the selection, tuning and adjustment of model parameters, we intro-duced the Ray cluster. It consists of two parts, a development server(head node) and several parameter servers.We do the feature extraction and selection, model selection in the development server. After we choose thecandidate models, we will make use of the Ray cluster to do the parameters selection and evaluate them.
+In this project, docker swarm was used to deploy the services in production VMs, which make the whole systemmore stable and to have a high availability. On the middle right of the figure 1, we deployed development andparameter tuning VMs, we tune the models in Ray Cluster which can speed up the whole process. The bestset of parameters will be used to train different models in different containers, and the best model will push bygit-hooks from development VM to production1 and production2 VMs.</p>
+
+<p><img src="/images/orchestration/celery_architecture.png" />
+On the production server, we run multiple containers. The containers guarantee the isolation between tasks.The tasks running in the container include Flask, RabbitMQ and Celery, as well as workers. Flask is a popularPython web service framework. Our web application is developed based in it. In the worker, we predict thegiven data based on the model and get the output. Celery is an asynchronous task queue. It can be used foranything that needs to be run asynchronously. The Broker (RabbitMQ) is responsible for the creation of task2 queues, dispatching tasks to task queues according to some routing rules, and then delivering tasks from taskqueues to workers. The framework of RabbitMQ and Celery is shown above.In our case, we submit a request on a flask-based web application. After receiving the request, the celery clientcalls RabbitMQ to create and assign tasks to workers. After the worker task is completed, the result is storedin the result backend, sent to the web application and displayed.</p>
+
+<h2 id="tools-automation-and-orchestration">Tools, Automation and Orchestration</h2>
+<p>In order to facilitate the reproduction and management of the project, we have automated and orchestrated mostof the steps of the project. Generally speaking, Openstack API is responsible for the automation of creatinginstances on Openstack and configuring their basic environment, Ansible is responsible for managing andmonitoring the VMs, the Ansible playbook is responsible for automatically configuring the detailed operatingenvironment and running programs of each instance, the CI/CD technology(git hook) is used to realize theautomatic push of the latest models to the production server. Most of the configurations including ci/cd areorchestrated by Ansible. Jupyternotebook is used to help to edit the code. Part of the construction of Raycluster and Swarm cluster is also completed automatically by Ansible. But some other settings of the clustersneed to be done manually.</p>
+
+<p>Our development cluster is a Ray cluster. It helps us to speed up the training of our models and parameterstuning. We use Docker Swarm to manage our production cluster. It contains 2 VMs. Docker Swarm providesa set of highly available Docker cluster management solutions, which fully supports the standard Docker API,facilitates the management and scheduling of cluster Docker containers, and makes full use of cluster hostresources. Both the production cluster and the development cluster have scalability in our architecture.</p>
+
+<h2 id="github">Github</h2>
+<p>If you want to know more details of our works, please check our reports in <a href="https://github.com/PNightOwlY/pred-on-github-population/tree/main">Github</a>.</p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><summary type="html"><![CDATA[Construct a virtual project environment through automated orchestra- tion technology to realize the separation of developer and producer en- vironments, and compare random forests, GDBT and neural network models to predict the accuracy and reasons of Github projects in the process.]]></summary></entry><entry><title type="html">Reinforcement Learning: Deep Q Learing</title><link href="http://localhost:4000/2021/05/26/reinforcement-learning-deep-Q-learning.html" rel="alternate" type="text/html" title="Reinforcement Learning: Deep Q Learing" /><published>2021-05-26T00:00:00+08:00</published><updated>2021-05-26T00:00:00+08:00</updated><id>http://localhost:4000/2021/05/26/reinforcement-learning-deep-Q-learning</id><content type="html" xml:base="http://localhost:4000/2021/05/26/reinforcement-learning-deep-Q-learning.html"><![CDATA[<center>
+<img src="/images/dqn/pong.gif" />
+</center>
+<h1 id="description-of-dqn">Description of DQN</h1>
+<p>DQN is an algorithm where a Q learning framework with a neural network proceeds as a nonlinear approximation on a state-value function. Unlike original Q-learning that requires a great amount of time to create a Q-table and memory to save history, which thus has its limitations in a large-scale problem, this novel algorithm has 2 main advantages to overcome these problems, i.e., experience replay and target network.</p>
+
+<p>With replay buffer, DQN stores the history for off-policy learning and extracts samples from the memory randomly. Because in reinforcement learning, the observed data are ordered. Ordered data is prone to overfitting current episodes. So DQN uses experience replay to solve this problem. Experience replay stores all necessary data (state transitions, rewards and actions) for performing Q learning and extracts sample data from the memory randomly to update. It reduces correlation between data.</p>
+
+<p>In addition, DQN is optimized on a target network with fixed parameters updated periodically so that the Q-network is not changed frequently and makes training more stable.</p>
+
+<h1 id="configurations">Configurations</h1>
+
+<p>In our experiments, we mainly tune the following parameters for comparison.</p>
+<ul>
+  <li>Memory Size: Maximum size of the replay memory.</li>
+  <li>lr: Learning rate, used for optimizer.</li>
+  <li>γ: Discount factor.</li>
+  <li>Using Win Memory: Whether we use another replay buffer, which will explain on section 3.3.</li>
+  <li>Decay: Epsilon decay rate</li>
+  <li>Average Reward: Evaluate the final model 10 times and average the rewards.</li>
+</ul>
+
+<h1 id="cartpole">CartPole</h1>
+<p>All the experiments are implemented in Google Colab. The parameters areexplained as follows.
+<img src="/images/dqn/ex1.jpg" />
+Note that the prefix “*” for is a distinguished result from the first Experiment 1.</p>
+
+<h2 id="discussion">Discussion</h2>
+<p>From Figure 1, it can be found that all figures show messy patterns for rewards. Experiment 1 is selected as a baseline for comparison. In Experiment 2, the memory size is larger and the averaged reward is more satisfactory. With more memory, the model tends to select different samples for gradient descent, so that the result will be more robust. Experiment 3 and 4 use different learning rates. Theoretically, a smaller learning rate gives a smooth and slowly-growing curve, and the larger one produces a more curve with violate fluctuation. However, Figure 1c and 1d show little relationship with expected tendency. Experiment 5 chooses a larger gamma that enables the current state to have a more impact on the future state and thus larger gamma leads to a larger reward, which is in line with our result. In experiment 6, we do not notice any distinguished differences caused by train update frequency, which may have to be set on a larger scale to generate a distinction. Anyway, it seems that there are no obvious differences and similarities among figures, and it is difficult for us to summary the regulations.</p>
+
+<h3 id="reward-function">Reward Function</h3>
+<p><img src="/images/dqn/f1.jpg" />
+As you can see in experiment 1 and *1, the hyperparameters are the same but with different reward functions. In experiment 1, the reward function is simple, the agent gets reward 1 when the game was not done, otherwise, the reward is -1. But in experiment *1, we changed the reward function which is based on the state. When the car is closer to the midpoint, the reward is higher. When the angle between the flag and the horizontal line is closer to 90 degrees, the reward is higher, and vice versa. The results revealed that a good reward function can make a huge difference in performance when it comes to Reinforcement Learning, which can speed up the process of agent learning.</p>
+
+<h1 id="results-of-pong">Results of Pong</h1>
+<p>All the experiments are implemented in Google Colab with 2.5 million frames. The parameters are explained as follows.
+<img src="/images/dqn/ex2.jpg" /></p>
+
+<h2 id="discussion-1">Discussion</h2>
+<p>The curve in the resulting figures may not be a good description of the performance of the current model, because we take the average of the most recent 10 episodes as the score of the current model. So when the experiment is over, we re-evaluated the average value ten times with the saved model. This result will be more representative.
+We implement multiple experiments based on the environment Pong-v0. In general, the results are basically satisfactory. The configuration of the model and its performance(Column Average reward) are displayed as Table 2.</p>
+<h3 id="replay-memory-size">Replay Memory Size</h3>
+
+<p>Figure 3 visualizes the results of Experiment 1, 2 and 3. It can be observed from 3a that when the replay memory size is 10000, the performance of the model is unstable, comparing with the averaged reward trend in Experiment 3. The reason for the differences is that the larger the experience replay, the less likely you will sample correlated elements, hence the more stable the training of the NN will be. However, a large experience replay requires a lot of memory so the training process is slower. Therefore, there is a trade-off between training stability (of the NN) and memory requirements. In these three experiments, the gamma valued 1, so the model is unbiased but with high variance, and also we have done the Experiment 2 twice, second time is basically satisfactory (as you can see in the graph), but first Experiment 2 were really poor which is almost same with Experiment 3. The result varies a lot among these two experiment due to the gamma equals to 1.</p>
+
+<h3 id="learning-rate">Learning Rate</h3>
+<p>Now we discuss how learning rate affects the averaged reward. It is found from Figure 4 that a high learning rate has relatively large volatility on the overall curve, and the learning ability is not stable enough, but the learning ability will be stronger.</p>
+<h3 id="win-replay-memory">Win Replay Memory</h3>
+<p>Here we try a new way to train our model and create a win replay memory for those frames that our agent gets reward 1. After 0.4 million frames, we start to randomly pick 5 samples from this win memory and then train the model every 5 thousand frames. The idea is for this kind of memory, the loss may vary a lot, so the model will tune the parameters more. But the results show that the performance is basically the same or even worse than that of learning rate = 0.0002.</p>
+
+<h2 id="summary">Summary</h2>
+<p>Each experiment takes 4h on Google Colab. We achieve 10-time average reward of 7.9 as the best result that is better than Experiment 1(suggested configuration on Studium), although the result is somewhat random and may be unreproducible. It seems that the models with higher learning rate(0.002) perform better, but its reward influtuates more sharply.</p>
+
+<p><img src="/images/dqn/f2.jpg" />
+<img src="/images/dqn/f3.jpg" />
+<img src="/images/dqn/f4.jpg" />
+<img src="/images/dqn/f5.jpg" /></p>
+
+<h1 id="github">Github</h1>
+<p>If you want to know more details of our works, please check our reports in <a href="https://github.com/PNightOwlY/reinforcement-learning-dqn.git">Github</a>.</p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><summary type="html"><![CDATA[A experiment to implement Deep Q Learning, and explore the performance of the model under different set of parameters.]]></summary></entry></feed>

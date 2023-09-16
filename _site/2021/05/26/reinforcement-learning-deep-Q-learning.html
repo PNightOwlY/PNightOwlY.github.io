@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Reinforcement Learning: Deep Q Learing | Ying Peng Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Reinforcement Learning: Deep Q Learing" />
+<meta name="author" content="Ying Peng" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A experiment to implement Deep Q Learning, and explore the performance of the model under different set of parameters." />
+<meta property="og:description" content="A experiment to implement Deep Q Learning, and explore the performance of the model under different set of parameters." />
+<link rel="canonical" href="http://localhost:4000/2021/05/26/reinforcement-learning-deep-Q-learning.html" />
+<meta property="og:url" content="http://localhost:4000/2021/05/26/reinforcement-learning-deep-Q-learning.html" />
+<meta property="og:site_name" content="Ying Peng Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-05-26T00:00:00+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Reinforcement Learning: Deep Q Learing" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Ying Peng"},"dateModified":"2021-05-26T00:00:00+08:00","datePublished":"2021-05-26T00:00:00+08:00","description":"A experiment to implement Deep Q Learning, and explore the performance of the model under different set of parameters.","headline":"Reinforcement Learning: Deep Q Learing","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2021/05/26/reinforcement-learning-deep-Q-learning.html"},"url":"http://localhost:4000/2021/05/26/reinforcement-learning-deep-Q-learning.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Ying Peng Blog" />
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><div style="float:left; margin-top:10px; margin-right:10px;margin-bottom:10px;">
+      <a href="/feed.xml">
+        <img src="/images/head_icons/uu.svg.png" width="40">
+      </a>
+    </div>
+    <div style="float:left; margin-top:10px; margin-right:10px;">
+      <a class="site-title" rel="author" href="/">Ying Peng Blog</a>
+    </div><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          <a href="#" class="menu-icon">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 18 15" enable-background="new 0 0 18 15" xml:space="preserve">
+              <path fill="#505050" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0
+                h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#505050" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484
+                h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#505050" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0
+                c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </a><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Reinforcement Learning: Deep Q Learing</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2021-05-26T00:00:00+08:00" itemprop="datePublished">
+        May 26, 2021
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <center>
+<img src="/images/dqn/pong.gif" />
+</center>
+<h1 id="description-of-dqn">Description of DQN</h1>
+<p>DQN is an algorithm where a Q learning framework with a neural network proceeds as a nonlinear approximation on a state-value function. Unlike original Q-learning that requires a great amount of time to create a Q-table and memory to save history, which thus has its limitations in a large-scale problem, this novel algorithm has 2 main advantages to overcome these problems, i.e., experience replay and target network.</p>
+
+<p>With replay buffer, DQN stores the history for off-policy learning and extracts samples from the memory randomly. Because in reinforcement learning, the observed data are ordered. Ordered data is prone to overfitting current episodes. So DQN uses experience replay to solve this problem. Experience replay stores all necessary data (state transitions, rewards and actions) for performing Q learning and extracts sample data from the memory randomly to update. It reduces correlation between data.</p>
+
+<p>In addition, DQN is optimized on a target network with fixed parameters updated periodically so that the Q-network is not changed frequently and makes training more stable.</p>
+
+<h1 id="configurations">Configurations</h1>
+
+<p>In our experiments, we mainly tune the following parameters for comparison.</p>
+<ul>
+  <li>Memory Size: Maximum size of the replay memory.</li>
+  <li>lr: Learning rate, used for optimizer.</li>
+  <li>γ: Discount factor.</li>
+  <li>Using Win Memory: Whether we use another replay buffer, which will explain on section 3.3.</li>
+  <li>Decay: Epsilon decay rate</li>
+  <li>Average Reward: Evaluate the final model 10 times and average the rewards.</li>
+</ul>
+
+<h1 id="cartpole">CartPole</h1>
+<p>All the experiments are implemented in Google Colab. The parameters areexplained as follows.
+<img src="/images/dqn/ex1.jpg" />
+Note that the prefix “*” for is a distinguished result from the first Experiment 1.</p>
+
+<h2 id="discussion">Discussion</h2>
+<p>From Figure 1, it can be found that all figures show messy patterns for rewards. Experiment 1 is selected as a baseline for comparison. In Experiment 2, the memory size is larger and the averaged reward is more satisfactory. With more memory, the model tends to select different samples for gradient descent, so that the result will be more robust. Experiment 3 and 4 use different learning rates. Theoretically, a smaller learning rate gives a smooth and slowly-growing curve, and the larger one produces a more curve with violate fluctuation. However, Figure 1c and 1d show little relationship with expected tendency. Experiment 5 chooses a larger gamma that enables the current state to have a more impact on the future state and thus larger gamma leads to a larger reward, which is in line with our result. In experiment 6, we do not notice any distinguished differences caused by train update frequency, which may have to be set on a larger scale to generate a distinction. Anyway, it seems that there are no obvious differences and similarities among figures, and it is difficult for us to summary the regulations.</p>
+
+<h3 id="reward-function">Reward Function</h3>
+<p><img src="/images/dqn/f1.jpg" />
+As you can see in experiment 1 and *1, the hyperparameters are the same but with different reward functions. In experiment 1, the reward function is simple, the agent gets reward 1 when the game was not done, otherwise, the reward is -1. But in experiment *1, we changed the reward function which is based on the state. When the car is closer to the midpoint, the reward is higher. When the angle between the flag and the horizontal line is closer to 90 degrees, the reward is higher, and vice versa. The results revealed that a good reward function can make a huge difference in performance when it comes to Reinforcement Learning, which can speed up the process of agent learning.</p>
+
+<h1 id="results-of-pong">Results of Pong</h1>
+<p>All the experiments are implemented in Google Colab with 2.5 million frames. The parameters are explained as follows.
+<img src="/images/dqn/ex2.jpg" /></p>
+
+<h2 id="discussion-1">Discussion</h2>
+<p>The curve in the resulting figures may not be a good description of the performance of the current model, because we take the average of the most recent 10 episodes as the score of the current model. So when the experiment is over, we re-evaluated the average value ten times with the saved model. This result will be more representative.
+We implement multiple experiments based on the environment Pong-v0. In general, the results are basically satisfactory. The configuration of the model and its performance(Column Average reward) are displayed as Table 2.</p>
+<h3 id="replay-memory-size">Replay Memory Size</h3>
+
+<p>Figure 3 visualizes the results of Experiment 1, 2 and 3. It can be observed from 3a that when the replay memory size is 10000, the performance of the model is unstable, comparing with the averaged reward trend in Experiment 3. The reason for the differences is that the larger the experience replay, the less likely you will sample correlated elements, hence the more stable the training of the NN will be. However, a large experience replay requires a lot of memory so the training process is slower. Therefore, there is a trade-off between training stability (of the NN) and memory requirements. In these three experiments, the gamma valued 1, so the model is unbiased but with high variance, and also we have done the Experiment 2 twice, second time is basically satisfactory (as you can see in the graph), but first Experiment 2 were really poor which is almost same with Experiment 3. The result varies a lot among these two experiment due to the gamma equals to 1.</p>
+
+<h3 id="learning-rate">Learning Rate</h3>
+<p>Now we discuss how learning rate affects the averaged reward. It is found from Figure 4 that a high learning rate has relatively large volatility on the overall curve, and the learning ability is not stable enough, but the learning ability will be stronger.</p>
+<h3 id="win-replay-memory">Win Replay Memory</h3>
+<p>Here we try a new way to train our model and create a win replay memory for those frames that our agent gets reward 1. After 0.4 million frames, we start to randomly pick 5 samples from this win memory and then train the model every 5 thousand frames. The idea is for this kind of memory, the loss may vary a lot, so the model will tune the parameters more. But the results show that the performance is basically the same or even worse than that of learning rate = 0.0002.</p>
+
+<h2 id="summary">Summary</h2>
+<p>Each experiment takes 4h on Google Colab. We achieve 10-time average reward of 7.9 as the best result that is better than Experiment 1(suggested configuration on Studium), although the result is somewhat random and may be unreproducible. It seems that the models with higher learning rate(0.002) perform better, but its reward influtuates more sharply.</p>
+
+<p><img src="/images/dqn/f2.jpg" />
+<img src="/images/dqn/f3.jpg" />
+<img src="/images/dqn/f4.jpg" />
+<img src="/images/dqn/f5.jpg" /></p>
+
+<h1 id="github">Github</h1>
+<p>If you want to know more details of our works, please check our reports in <a href="https://github.com/PNightOwlY/reinforcement-learning-dqn.git">Github</a>.</p>
+
+
+  </div><a class="u-url" href="/2021/05/26/reinforcement-learning-deep-Q-learning.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="http://localhost:4000/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+        <ul class="contact-list">
+          <li class="p-name">Ying Peng</li>
+          <li><a class="u-email" href="mailto:ying.peng.8170@student.uu.se">ying.peng.8170@student.uu.se</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
+
+
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+
+      processEscapes: true
+    }
+
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
