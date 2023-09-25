@@ -503,11 +503,9 @@ table td {
   padding-bottom: 5px;
 }
 .site-nav .page-link {
-  margin-top: 10px;
   color: #111111;
   line-height: 1.5;
   display: block;
-  padding: 5px 10px;
   text-align: right;
   margin-left: 20px;
 }
@@ -531,7 +529,6 @@ table td {
     display: block;
   }
   .site-nav .page-link {
-    margin-top: 10px;
     display: inline;
     padding: 0;
     margin-left: auto;

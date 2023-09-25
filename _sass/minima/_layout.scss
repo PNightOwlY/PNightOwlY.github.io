@@ -76,11 +76,9 @@
   }
 
   .page-link {
-    margin-top: 10px;
     color: $text-color;
     line-height: $base-line-height;
     display: block;
-    padding: 5px 10px;
     text-align: right;
 
     // Gaps between nav items, but not on the last one
@@ -109,7 +107,6 @@
     }
 
     .page-link {
-      margin-top: 10px;
       display: inline;
       padding: 0;
 
