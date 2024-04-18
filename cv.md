@@ -14,7 +14,7 @@ permalink: /cv/
 
 -----
 ## Experience
-- **NLP Researcher&nbsp;&nbsp;&nbsp;&nbsp; Zhuiyi Technology Co., Ltd. &nbsp;&nbsp;&nbsp;&nbsp; 09.2022 ~ 09.2023**
+- **NLP Researcher&nbsp;&nbsp;&nbsp;&nbsp; Zhuiyi Technology Co., Ltd. &nbsp;&nbsp;&nbsp;&nbsp; 09.2022 ~ Now**
   - Contributed to the design of a SaaS-based enterprise intelligent customer service platform which involves task-oriented(finite state machine), skill-based(external API service), FAQ(semantic matching&knowledge graph), document retrieval(semantic matching), and information retrieval(web crawler) chatbots.
   - Building an education platform that is a dialogue logging system for intent and task mining, conversation analysis, and potential business opportunities mining, aiming to enhance the user experience.
   - Conducted an in-depth investigation into the application of semantic models in information retrieval.
@@ -52,6 +52,6 @@ permalink: /cv/
 
 ## Skills
   - **Programming Languages**: C/C++, Python, Golang, Shell R, SQL, Java, Minizinc, Dart, PHP
-  - **Frameworks**: PyTorch, Tensorflow, Langchain, Streamlit, Django, Spark, Ray, Hadoop
+  - **Frameworks**: PyTorch, Tensorflow, Langchain, Streamlit, Django, Spark, Ray, Hadoop, Triton
   - **Developer Tools**: Git, Docker, Kubernetes, OpenStack, LaTeX
   - **Databases**: MySQL, ElasticSearch, Redis, Minio, Etcd, Milvus, MongoDB

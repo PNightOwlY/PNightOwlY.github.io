@@ -3,21 +3,22 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Ying Peng Blog | What I cannot create, I do not understand.</title>
+<title>Semantic Match Deep Dive 2 | Ying Peng Blog</title>
 <meta name="generator" content="Jekyll v4.3.2" />
-<meta property="og:title" content="Ying Peng Blog" />
+<meta property="og:title" content="Semantic Match Deep Dive 2" />
 <meta name="author" content="Ying Peng" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="What I cannot create, I do not understand." />
-<meta property="og:description" content="What I cannot create, I do not understand." />
-<link rel="canonical" href="http://localhost:4000/" />
-<meta property="og:url" content="http://localhost:4000/" />
+<meta name="description" content="Experiments on both sentence to sentence(s2s) and sentence to passage(s2p) tasks." />
+<meta property="og:description" content="Experiments on both sentence to sentence(s2s) and sentence to passage(s2p) tasks." />
+<link rel="canonical" href="http://localhost:4000/2023/09/20/semantic-match-deep-dive.html" />
+<meta property="og:url" content="http://localhost:4000/2023/09/20/semantic-match-deep-dive.html" />
 <meta property="og:site_name" content="Ying Peng Blog" />
-<meta property="og:type" content="website" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-09-20T00:00:00+08:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Ying Peng Blog" />
+<meta property="twitter:title" content="Semantic Match Deep Dive 2" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Ying Peng"},"description":"What I cannot create, I do not understand.","headline":"Ying Peng Blog","name":"Ying Peng Blog","url":"http://localhost:4000/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Ying Peng"},"dateModified":"2023-09-20T00:00:00+08:00","datePublished":"2023-09-20T00:00:00+08:00","description":"Experiments on both sentence to sentence(s2s) and sentence to passage(s2p) tasks.","headline":"Semantic Match Deep Dive 2","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/09/20/semantic-match-deep-dive.html"},"url":"http://localhost:4000/2023/09/20/semantic-match-deep-dive.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Ying Peng Blog" />
 </head>
@@ -56,55 +57,62 @@
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Semantic Match Deep Dive 2</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-09-20T00:00:00+08:00" itemprop="datePublished">
+        Sep 20, 2023
+      </time></p>
+  </header>
 
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+<p>Last post, we already talked about the basic concepts of <strong>s2s&amp;s2p</strong> tasks. Now I have done some experiments on compared the different methods to verify the effectiveness.</p>
 
-  <ul class="post-list"><li>
-        <span class="post-meta">Sep 20, 2023</span>
-        <h3>
-          <a class="post-link" href="/2023/09/20/semantic-match-deep-dive.html">
-            Semantic Match Deep Dive 2
-          </a>
-        </h3>Experiments on both sentence to sentence(s2s) and sentence to passage(s2p) tasks.</li><li>
-        <span class="post-meta">Sep 14, 2023</span>
-        <h3>
-          <a class="post-link" href="/2023/09/14/semantic-match-deep-dive.html">
-            Semantic Match Deep Dive 1
-          </a>
-        </h3>A detailed introduction of semantic match on both sentence to sentence(s2s) and sentence to passage(s2p) tasks.</li><li>
-        <span class="post-meta">Jul 26, 2023</span>
-        <h3>
-          <a class="post-link" href="/posts/2023/07/chatgpt-prompt/">
-            Notes for ChatGPT Prompt Engineering for Developers
-          </a>
-        </h3>A tutorial of using prompt.</li><li>
-        <span class="post-meta">Sep 20, 2022</span>
-        <h3>
-          <a class="post-link" href="/posts/2022/09/language-model/">
-            Language Model
-          </a>
-        </h3>This is a note for deep language models. The contents include introduction of word2vec, seq2seq, transformer models.</li><li>
-        <span class="post-meta">Jun 15, 2021</span>
-        <h3>
-          <a class="post-link" href="/2021/06/15/Design-and-Implementation-of-Automated-Orchestration-Architecture.html">
-            Design and Implementation of Automated Orchestration Architecture
-          </a>
-        </h3>Construct a virtual project environment through automated orchestra- tion technology to realize the separation of developer and producer en- vironments, and compare random forests, GDBT and neural network models to predict the accuracy and reasons of Github projects in the process.</li><li>
-        <span class="post-meta">May 26, 2021</span>
-        <h3>
-          <a class="post-link" href="/2021/05/26/reinforcement-learning-deep-Q-learning.html">
-            Reinforcement Learning: Deep Q Learing
-          </a>
-        </h3>A experiment to implement Deep Q Learning, and explore the performance of the model under different set of parameters.</li><li>
-        <span class="post-meta">Dec 15, 2020</span>
-        <h3>
-          <a class="post-link" href="/2020/12/15/music-classification.html">
-            Music classifcation
-          </a>
-        </h3>Use basic machine learning such as logistic regression, knn, random forest, abd GBDT models to do the music classification, and won first place in leardboard.</li></ul>
+<p><em>The experiments only test the effectiveness of the inference models without any finetuning</em></p>
 
-    </div>
+<h1 id="dataset">Dataset</h1>
+<p>Here I used two types of dataset, one is classificaiton dataset, and another is passage retrieval dataset. The details information as follows.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Task</th>
+      <th>Size</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>toutiao-text-classification-dataset</td>
+      <td>classification</td>
+      <td>7k</td>
+      <td>https://github.com/aceimnorstuvwxz/toutiao-text-classfication-dataset/tree/master</td>
+    </tr>
+    <tr>
+      <td>DuReaderretrieval</td>
+      <td>passage retrieval</td>
+      <td>q:5k, p:4w</td>
+      <td>https://www.luge.ai/#/luge/dataDetail?id=55</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="results">Results</h1>
+<h2 id="results-of-s2s-only-retrieval">Results of s2s only retrieval.</h2>
+<p>Here I used BGE M3 model to do the cosine similarity match, the results is below.
+<img src="/images/semantic_match/cls_retrieval_bgem3.png" /></p>
+<h2 id="results-of-s2s-retrievaltop-5rerank">Results of s2s retrieval(top 5)&amp;rerank</h2>
+<p>Then I added second stage rerank with retrieval top 5 candidates, the results as follows.
+<img src="/images/semantic_match/cls_retrieval_rerank.png" /></p>
+<h2 id="results-of-s2s-retrievaltop-100rerank">Results of s2s retrieval(top 100)&amp;rerank</h2>
+<p>I also tried retrieval top 100 candidates and do reranking, the results as follows.
+<img src="/images/semantic_match/cls_retrieval_rerank_t100.png" /></p>
+
+  </div><a class="u-url" href="/2023/09/20/semantic-match-deep-dive.html" hidden></a>
+</article>
 
       </div>
     </main><footer class="site-footer h-card">

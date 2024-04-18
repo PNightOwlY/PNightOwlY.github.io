@@ -1,5 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-25T08:25:43+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ying Peng Blog</title><subtitle>What I cannot create, I do not understand.
-</subtitle><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><entry><title type="html">Semantic Match Deep Dive 1</title><link href="http://localhost:4000/2023/09/14/semantic-match-deep-dive.html" rel="alternate" type="text/html" title="Semantic Match Deep Dive 1" /><published>2023-09-14T00:00:00+08:00</published><updated>2023-09-14T00:00:00+08:00</updated><id>http://localhost:4000/2023/09/14/semantic-match-deep-dive</id><content type="html" xml:base="http://localhost:4000/2023/09/14/semantic-match-deep-dive.html"><![CDATA[<h1 id="introduction-of-semantic-match">Introduction of Semantic Match</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-03-29T17:36:52+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ying Peng Blog</title><subtitle>What I cannot create, I do not understand.
+</subtitle><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><entry><title type="html">Semantic Match Deep Dive 2</title><link href="http://localhost:4000/2023/09/20/semantic-match-deep-dive.html" rel="alternate" type="text/html" title="Semantic Match Deep Dive 2" /><published>2023-09-20T00:00:00+08:00</published><updated>2023-09-20T00:00:00+08:00</updated><id>http://localhost:4000/2023/09/20/semantic-match-deep-dive</id><content type="html" xml:base="http://localhost:4000/2023/09/20/semantic-match-deep-dive.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+<p>Last post, we already talked about the basic concepts of <strong>s2s&amp;s2p</strong> tasks. Now I have done some experiments on compared the different methods to verify the effectiveness.</p>
+
+<p><em>The experiments only test the effectiveness of the inference models without any finetuning</em></p>
+
+<h1 id="dataset">Dataset</h1>
+<p>Here I used two types of dataset, one is classificaiton dataset, and another is passage retrieval dataset. The details information as follows.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Task</th>
+      <th>Size</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>toutiao-text-classification-dataset</td>
+      <td>classification</td>
+      <td>7k</td>
+      <td>https://github.com/aceimnorstuvwxz/toutiao-text-classfication-dataset/tree/master</td>
+    </tr>
+    <tr>
+      <td>DuReaderretrieval</td>
+      <td>passage retrieval</td>
+      <td>q:5k, p:4w</td>
+      <td>https://www.luge.ai/#/luge/dataDetail?id=55</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="results">Results</h1>
+<h2 id="results-of-s2s-only-retrieval">Results of s2s only retrieval.</h2>
+<p>Here I used BGE M3 model to do the cosine similarity match, the results is below.
+<img src="/images/semantic_match/cls_retrieval_bgem3.png" /></p>
+<h2 id="results-of-s2s-retrievaltop-5rerank">Results of s2s retrieval(top 5)&amp;rerank</h2>
+<p>Then I added second stage rerank with retrieval top 5 candidates, the results as follows.
+<img src="/images/semantic_match/cls_retrieval_rerank.png" /></p>
+<h2 id="results-of-s2s-retrievaltop-100rerank">Results of s2s retrieval(top 100)&amp;rerank</h2>
+<p>I also tried retrieval top 100 candidates and do reranking, the results as follows.
+<img src="/images/semantic_match/cls_retrieval_rerank_t100.png" /></p>]]></content><author><name>Ying Peng</name><email>ying.peng.8170@student.uu.se</email></author><category term="NLP" /><summary type="html"><![CDATA[Experiments on both sentence to sentence(s2s) and sentence to passage(s2p) tasks.]]></summary></entry><entry><title type="html">Semantic Match Deep Dive 1</title><link href="http://localhost:4000/2023/09/14/semantic-match-deep-dive.html" rel="alternate" type="text/html" title="Semantic Match Deep Dive 1" /><published>2023-09-14T00:00:00+08:00</published><updated>2023-09-14T00:00:00+08:00</updated><id>http://localhost:4000/2023/09/14/semantic-match-deep-dive</id><content type="html" xml:base="http://localhost:4000/2023/09/14/semantic-match-deep-dive.html"><![CDATA[<h1 id="introduction-of-semantic-match">Introduction of Semantic Match</h1>
 <p>Semantic match is one of the basic tasks of NLP, the goal of the task is to determine whether two sentences have the same semantic meaning. Semantic match is widely used in natural language processing, such as question answering, information retrieval, machine reading comprehension, etc.</p>
 
 <p>Semantic match tasks can be divided into two categories:</p>
