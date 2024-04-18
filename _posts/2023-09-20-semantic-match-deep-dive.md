@@ -34,10 +34,10 @@ I also tried retrieval top 100 candidates and do reranking, the results as follo
 <img src='/images/semantic_match/cls_retrieval_rerank_t100.png'>
 
 ## Results of s2p
-|                       | top1   | top3   | top5   | top10  |
+|           Method      | top1   | top3   | top5   | top10  |
 |-----------------------|--------|--------|--------|--------|
 | retrieval-only        | 0.3309 | 0.5967 | 0.7151 | 0.8386 |
-| retrieval-5 + rerank  | 0.4064 | 0.6530 | 0.7151 |    -    |
+| retrieval-5 + rerank  | 0.4064 | 0.6530 | 0.7151 |    -   |
 | retrieval-20 + rerank | 0.4266 | 0.7245 | 0.8280 | 0.8992 |
 
 The table shows after reranking, the retrieval accuracy improved significantly, top 1 accuracy increased 7% after reranking top 5 retrieval results, top3 accuracy increased from 59.67% to 72.45% by reranked top 20.
