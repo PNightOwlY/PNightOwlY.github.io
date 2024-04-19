@@ -17,7 +17,7 @@ plugins:
   - jekyll-seo-tag
 
 # Theme-specific settings
-google_analytics: 7896088072
+google_analytics: G-XQJ4GMCTHH
 
 minima:
   # Minima date format.
