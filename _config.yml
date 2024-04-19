@@ -19,6 +19,11 @@ plugins:
 # Theme-specific settings
 google_analytics: G-XQJ4GMCTHH
 
+leancloud:
+  app_id: j3nf7l1g4XB62OjghcsOdUGW-gzGzoHsz
+  app_key: OaglL60bnowD0CCcvvtUKZ37
+
+
 minima:
   # Minima date format.
   # Refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this.
