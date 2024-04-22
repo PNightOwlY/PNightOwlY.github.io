@@ -1,0 +1,26 @@
+---
+layout: post
+title: 'PDF2Markdown: A big step of information processing'
+date: 2023-09-20
+excerpt: "Translate PDF to Markdown"
+tags:
+  - NLP
+---
+
+# PDF2Markdown: A big step of information processing
+
+## 1. Introduction
+<img src="/images/pdf2md/pdf2markdown.png">
+PDF2Markdown is a tool that can convert PDF files to Markdown format. It can extract text, images, and other elements from the PDF file and convert them to Markdown format, making it easier to process and organize the information.
+
+This project mainly implements the function of converting PDF to Markdown, including 
+
+- OCR: extracing text from images
+- Layout Analysis: table, figure, and other layout elements
+- Layout Sorting: blocks ranking
+- Title Sorting: preserve hierarchy
+- ...
+
+Firstly, the pdf will be converted to N images, and then perform layout analysis on each images to obtain blocks of table, title, text and etc.
+
+Secondly, the blocks will be ranked by their position and hierarchy, and then processed by different block processors.
