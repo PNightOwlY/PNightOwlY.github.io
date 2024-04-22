@@ -41,6 +41,7 @@ I also tried retrieval top 100 candidates and do reranking, the results as follo
 | retrieval-5 + rerank  | 0.4064 | 0.6530 | 0.7151 |    \   |
 | retrieval-20 + rerank | 0.4266 | 0.7245 | 0.8280 | 0.8992 |
 
+
 The table shows after reranking, the retrieval accuracy improved significantly, top 1 accuracy increased 7% after reranking top 5 retrieval results, top3 accuracy increased from 59.67% to 72.45% by reranked top 20.
 
 However, rerank is really consuming, so in the reality it's not a effective way to do reranking or we use less retrieved results to do reranking.
